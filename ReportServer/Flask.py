@@ -14,8 +14,7 @@ lists = list(rootpath)
 del lists[-1]
 newpath = '/'.join(lists)
 os.chdir(newpath)
-print '当前文件路径:'+os.getcwd()
-
+print('当前文件路径:' + os.getcwd())
 
 mempath = os.getcwd() + '/' + DateBean().mempath
 cpupath = os.getcwd() + '/' + DateBean().cpupath
@@ -28,6 +27,7 @@ htmlpath = os.getcwd() + '/ReportServer/performanceReport/performance_%s.html' %
 
 host = '0.0.0.0'
 port = 8888
+
 
 def create_app():
     '''
@@ -73,17 +73,16 @@ def gethtml(monkeycmd):
     try:
         error = False
         data = {'monkeycmd': monkeycmd}
-        r = requests.post('http://%s:%d/' % (host, port),data=data)
+        r = requests.post('http://%s:%d/' % (host, port), data=data)
         with open(htmlpath, 'wb+') as f:
             f.write(r.content)
 
         logger.log_info('performance.html write complete' + '\n' \
-              + 'path is: %s' % htmlpath)
+                        + 'path is: %s' % htmlpath)
 
     except Exception as e:
         logger.log_error('performance.html write fail' + '\n' + str(e))
         error = True
-
 
     r.close()
     stopflask()
@@ -146,6 +145,7 @@ def readnetwork():
 
     return time, info, activity
 
+
 def readfps():
     '''
     读取fps.txt文件的数据
@@ -164,26 +164,14 @@ def readfps():
     return time, info, activity
 
 
-
 def task(**kwargs):
-    '''
-    定义两个线程,用来做异步操作
-    :return:
-    '''
-    def async(f):
-        def wrapper(*args, **kwargs):
-            thr = Thread(target=f, args=args, kwargs=kwargs)
-            thr.start()
-        return wrapper
-
     # 定义异步执行
-    @async
-    def asyncgethtml():
+    async def asyncgethtml():
         time.sleep(2)
         gethtml(kwargs['monkeycmd'])
         logger.log_info("GetHtml complete")
 
-    def asyncrunflask():
+    async def asyncrunflask():
         runflask()
         logger.log_info("RunFlask complete")
 
@@ -191,7 +179,7 @@ def task(**kwargs):
     asyncrunflask()
 
 
-@app.route('/',methods=['POST'])
+@app.route('/', methods=['POST'])
 def html():
     '''
     拼接html报告
@@ -228,7 +216,6 @@ def html():
     tuples1 = tuples1 + tuple(H)
     # 返回拼接的元祖
 
-
     tuples2 = ()
     # 空元祖
     data2 = readnetwork()
@@ -259,11 +246,9 @@ def html():
     tuples3 = tuples3 + tuple(q)
     # 返回拼接的元祖
 
-    return render_template("template.html",title=request.form['monkeycmd'],
+    return render_template("template.html", title=request.form['monkeycmd'],
                            data=tuples, memtime=data[0], meminfo=data[1], memactivity=data[2],
                            data1=tuples1, cputime=data1[0], cpuinfo=data1[1], cpuactivity=data1[2],
                            data2=tuples2, nettime=data2[0], netinfo=data2[1], netactivity=data2[2],
                            data3=tuples3, fpstime=data3[0], fpsinfo=data3[1], fpsactivity=data3[2]
                            )
-
-

@@ -45,7 +45,7 @@ class AdbCommon():
                     osv = line.split('=')[1].replace('\n', '').replace('\r', '')
 
             return model, board, osv
-        except Exception, e:
+        except Exception as e:
             logger.log_error("getproductinfo error! " + str(e))
             return 'undefined', 'undefined', 'undefined'
 
@@ -62,7 +62,7 @@ class AdbCommon():
             act =str(result.readlines()).split('/')[1].split()[0]
             return act
 
-        except Exception, e:
+        except Exception as e:
             logger.log_error("GetActivity error! " + str(e))
             return 'undefined'
 
@@ -83,7 +83,7 @@ class AdbCommon():
                 logger.log_info("List of devices attached")
                 return 0
 
-        except Exception, e:
+        except Exception as e:
             logger.log_error("the process doesn't exist." + str(e))
             return 0
 
@@ -100,7 +100,7 @@ class AdbCommon():
             pipe = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE).stdout
             pid = pipe.read().split()[1]
             return str(pid)
-        except Exception, e:
+        except Exception as e:
             logger.log_error("the process doesn't exist." + str(e))
             return 0
 
@@ -118,7 +118,7 @@ class AdbCommon():
             for index in pipe.readlines():
                 if index.startswith('Uid'):
                     return index.split()[1]
-        except Exception, e:
+        except Exception as e:
             logger.log_error("the process doesn't exist." + str(e))
             return 0
 
@@ -164,7 +164,7 @@ class AdbCommon():
                 return 0
             else:
                 return 1
-        except Exception, e:
+        except Exception as e:
             logger.log_error('检查%s失败' % apkname + '\n' + '异常原因:%s' % e)
             return 1
 
@@ -190,7 +190,7 @@ class AdbCommon():
             #     return 1
             return 0
 
-        except Exception, e:
+        except Exception as e:
             logger.log_error('安装%s失败' % apkname + '\n' + '异常原因:%s' % e)
             return 1
 
@@ -274,7 +274,7 @@ class AdbCommon():
             else:
                 logger.log_info("修改%s中%s行失败" % (path, oldstart))
                 return 1
-        except Exception, e:
+        except Exception as e:
             logger.log_error("修改%s中%s行失败:%s" % (path, oldstart, str(e)))
             return 1
 

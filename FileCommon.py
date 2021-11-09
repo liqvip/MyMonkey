@@ -69,4 +69,4 @@ def ClearLog():
 
 
 if __name__ == '__main__':
-    print readyaml("Config.yml")
+    print(readyaml("Config.yml"))
