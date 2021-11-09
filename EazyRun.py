@@ -61,7 +61,7 @@ def run():
             else:
                 flag1 = True
 
-    except Exception, e:
+    except Exception as e:
         logger.log_error('输入的runtime参数,类型必须是整数' + '\n' + '异常信息:' + str(e))
 
     try:
@@ -70,7 +70,7 @@ def run():
         else:
             logger.log_info('输入的seed参数,类型必须是整数')
 
-    except Exception, e:
+    except Exception as e:
         logger.log_error('输入的seed参数,类型必须是整数'  + '\n' + '异常信息:' + str(e))
 
     try:
@@ -79,7 +79,7 @@ def run():
         else:
             logger.log_info('输入的throttle参数,类型必须是整数')
 
-    except Exception, e:
+    except Exception as e:
         logger.log_error('输入的throttle参数,类型必须是整数' + '\n' + '异常信息:' + str(e))
 
     rootpath = str(sys.argv[0]).split('/')
@@ -95,20 +95,20 @@ def run():
          db.simulator = simulator
          flag4 = True
 
-    except Exception, e:
+    except Exception as e:
         logger.log_error('修改simulator失败' + '\n' + '异常信息:' + str(e))
 
     try:
         db.appdebug = appdebug
         flag5 = True
 
-    except Exception, e:
+    except Exception as e:
         logger.log_error('修改appdebug失败'  + '\n' + '异常信息:' + str(e))
 
     try:
         apkpath = adc.getfolderapk(apkpath)
         flag6 = True
-    except Exception, e:
+    except Exception as e:
         logger.log_error('获取apk路径失败'  + '\n' + '异常信息:' + str(e))
 
     if flag1 and flag2 and flag3 and flag4 and flag5 and flag6 == True :

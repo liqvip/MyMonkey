@@ -1,6 +1,9 @@
 # 项目简介
 基于原生google的monkey,增了加一些自定义功能
 
+# 生成项目依赖文件 requirements.txt，并安装这些依赖包
+直接运行 Setup.py，会自动生成当前目录下的项目清单文件 requirements.txt 
+
 # 使用方式一
 
 ```angular2html
@@ -50,13 +53,3 @@ python EasyRun.py
 报告展示如下:
 
 ![image](Report.png)
-
-# 生成项目依赖并安装
-
-```
-运行Setup.py
-
-1.pip install pipreqs
-2.工程目录下：pipreqs ./
-3.pip install -r requirements.txt
-```

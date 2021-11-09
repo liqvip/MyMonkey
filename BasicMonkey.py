@@ -136,7 +136,7 @@ class BasicMonkey():
                pid = pids.split()[1]
             logger.log_info("当前monkey进程pid:%s" % pid)
             return 0
-        except Exception ,e:
+        except Exception as e:
             logger.log_error("当前monkey进程不存在:%s" % str(e))
             return 1
 
@@ -150,7 +150,7 @@ class BasicMonkey():
             os.popen("adb -s %s logcat -c" % self.dev )
             return 0
 
-        except Exception,e:
+        except Exception as e:
             logger.log_error("执行adb logcat -c出现异常%s" % str(e))
             return 1
 
