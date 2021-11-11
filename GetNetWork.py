@@ -56,7 +56,7 @@ class GetNetWork():
 
             total = (format(float(updata + downdata) / float(1024 * 1024), '.3f'))
 
-        except  Exception, e:
+        except  Exception as e:
             logger.log_error('获取真机流量失败:%s' + str(e))
             total = 0
 
@@ -101,7 +101,7 @@ class GetNetWork():
                     total = (int(down) + int(send)) / (1024 * 1024)
                     # 上传和下载
 
-        except  Exception, e:
+        except  Exception as e:
             logger.log_error('获取模拟器流量失败:%e' + str(e))
             total = 0
 

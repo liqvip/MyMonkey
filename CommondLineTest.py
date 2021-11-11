@@ -2,13 +2,10 @@ import getopt
 import sys
 
 if __name__ == '__main__':
-    example = 'hello\nworld'
-    example2 = 'abc' \
-               'edf' \
-               'ghi' \
-               'jkl' \
-               'mno' \
-               'pqr' \
-               'stu'
-    print(example)
-    print(example2)
+    print(sys.argv)
+    argList = sys.argv[0].split('/')
+    print(argList)
+    del argList[-1]
+    print(argList)
+    rootPath = '/'.join(argList)
+    print(rootPath)

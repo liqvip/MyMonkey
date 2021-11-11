@@ -55,7 +55,7 @@ class GetCPU():
             for line in result.readlines():
                 if re.findall(self.db.packagename, line):
                     total = line.split()[0].replace('%', '')
-        except Exception, e:
+        except Exception as e:
             logger.log_error("获取cpu失败:" + str(e))
             total = 0
         finally:

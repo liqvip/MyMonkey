@@ -65,7 +65,7 @@ class GetFPS():
             fps = int(frame_count * 60 / (frame_count + vsync_overtime))
 
 
-        except Exception, e:
+        except Exception as e:
             logger.log_error("获取fps失败:" + str(e))
             fps = 0
 

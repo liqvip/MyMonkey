@@ -47,7 +47,7 @@ class GetMemory():
                 if index.startswith('  Dalvik Heap'):
                     heapalloc = index.split()[7]
 
-        except Exception, e:
+        except Exception as e:
             logger.log_error("获取内存失败" + str(e))
             heapalloc = 0
 

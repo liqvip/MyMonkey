@@ -140,8 +140,8 @@ def send_mail(devices, monkeylog, writerror, runtime, monkeycmd):
             s.quit()
             logger.log_info("mail send success")
 
-        except Exception, e:
-            print str(e)
+        except Exception as e:
+            print(str(e))
             logger.log_error("mail send fail" + '\n' + '异常信息:' + str(e))
             s.quit()
     else:

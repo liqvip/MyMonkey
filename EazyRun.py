@@ -83,6 +83,7 @@ def run():
         logger.log_error('输入的throttle参数,类型必须是整数' + '\n' + '异常信息:' + str(e))
 
     rootpath = str(sys.argv[0]).split('/')
+    # sys.argv[0] 获取的是当前文件的绝对路径
     lists = list(rootpath)
     del lists[-1]
     newpath = '/'.join(lists)
