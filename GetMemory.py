@@ -20,8 +20,6 @@ import sys
 from DateBean import DateBean
 import logger
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 f = None
 

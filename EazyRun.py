@@ -6,13 +6,11 @@
 @author xinxi
 '''
 
-
 from GetMemory import GetMemory
 from GetCPU import GetCPU
 from GetNetWork import GetNetWork
 from GetFPS import GetFPS
 from BasicMonkey import BasicMonkey
-from ReportServer import Flask
 from SendMail import *
 from CrashSQL import *
 from DateBean import DateBean
@@ -20,8 +18,7 @@ import logger
 
 
 def run():
-
-    configYaml =  readyaml("Config.yml")
+    configYaml = readyaml("Config.yml")
     apkname = configYaml["apkname"]
     # apk包名
     runtime = configYaml["runtime"]
@@ -36,7 +33,7 @@ def run():
     # 设备是否模拟器参数
     appdebug = configYaml["appdebug"]
     # app是否是debug
-    devices = configYaml["devces"]
+    device = configYaml["device"]
     # 设备号
     whitelist = configYaml["whitelist"]
     # 白名单列表
@@ -47,12 +44,11 @@ def run():
     loglevel = configYaml["loglevel"]
     # 日志等级
 
-    adc = AdbCommon(devices)
+    adc = AdbCommon(device)
     # 初始化AdbCommon类
     db = DateBean()
     logger.setup_logger(loglevel)
     # 设置log级别
-    
 
     try:
         if isinstance(int(runtime), int):
@@ -71,7 +67,7 @@ def run():
             logger.log_info('输入的seed参数,类型必须是整数')
 
     except Exception as e:
-        logger.log_error('输入的seed参数,类型必须是整数'  + '\n' + '异常信息:' + str(e))
+        logger.log_error('输入的seed参数,类型必须是整数' + '\n' + '异常信息:' + str(e))
 
     try:
         if isinstance(int(throttle), int):
@@ -89,12 +85,12 @@ def run():
     newpath = '/'.join(lists)
     os.chdir(newpath)
     # 跳转到当前目录下
-    logger.log_info('当前文件路径:'+os.getcwd())
+    logger.log_info('当前文件路径:' + os.getcwd())
     # 获得当前工作目录
 
     try:
-         db.simulator = simulator
-         flag4 = True
+        db.simulator = simulator
+        flag4 = True
 
     except Exception as e:
         logger.log_error('修改simulator失败' + '\n' + '异常信息:' + str(e))
@@ -104,33 +100,36 @@ def run():
         flag5 = True
 
     except Exception as e:
-        logger.log_error('修改appdebug失败'  + '\n' + '异常信息:' + str(e))
+        logger.log_error('修改appdebug失败' + '\n' + '异常信息:' + str(e))
 
     try:
         apkpath = adc.getfolderapk(apkpath)
         flag6 = True
     except Exception as e:
-        logger.log_error('获取apk路径失败'  + '\n' + '异常信息:' + str(e))
+        logger.log_error('获取apk路径失败' + '\n' + '异常信息:' + str(e))
 
-    if flag1 and flag2 and flag3 and flag4 and flag5 and flag6 == True :
+    if flag1 and flag2 and flag3 and flag4 and flag5 and flag6 == True:
 
         info = 'apkname is:"{}'.format(apkname) + '\n' + 'runtime is:{}'.format(runtime) + '\n' + \
-              'seed is:{}'.format(seed) + '\n' + 'apkpath is: {}'.format(apkpath) + '\n' + \
-              'throttle is: {}'.format(throttle) + '\n' + 'simulator is: {}'.format(simulator)  + '\n' + \
-              'appdebug is: {}'.format(appdebug) + '\n' + 'devices is: {}'.format(devices) + '\n' + 'whitelist is: {}'.format(str(whitelist))
+               'seed is:{}'.format(seed) + '\n' + 'apkpath is: {}'.format(apkpath) + '\n' + \
+               'throttle is: {}'.format(throttle) + '\n' + 'simulator is: {}'.format(simulator) + '\n' + \
+               'appdebug is: {}'.format(appdebug) + '\n' + 'devices is: {}'.format(
+            device) + '\n' + 'whitelist is: {}'.format(str(whitelist))
         logger.log_info(info)
 
         if adc.getdevices() != 0:
+            # 能够获取到设备 id
             if adc.installdependapp() == 0:
-                if adc.launch_app(db.simiasquename,db.simiasqueactivity) == 0:
+                # 安装依赖 app
+                if adc.launch_app(db.simiasquename, db.simiasqueactivity) == 0:
                     adc.sendbroadcast(0)
                     # 开启隐藏导航栏
                     if adc.installapp(apkname, apkpath) == 0:
-
-                       main(devices=devices,seed=seed, apkname=apkname,
-                            throttle=throttle, runtime=runtime,whitelist=whitelist,
-                            account=account,pwd=pwd,simulator=db.simulator,db=db)
-                        # 调用运行主方法
+                        # 安装需要测试的 apk
+                        main(device=device, seed=seed, apkname=apkname,
+                             throttle=throttle, runtime=runtime, whitelist=whitelist,
+                             account=account, pwd=pwd, simulator=db.simulator, db=db)
+                        # 开始测试
 
                     else:
                         logger.log_info('安装%s失败,请检查apk文件路径%s' % (apkname, apkpath))
@@ -145,12 +144,11 @@ def run():
         logger.log_info('请检查输入参数个数')
 
 
-
 def main(**kwargs):
     '''
     Main主脚本执行Monkey和性能采集,并生成html报告
     '''
-    devices = kwargs['devices']
+    device = kwargs['device']
     seed = kwargs['seed']
     apkname = kwargs['apkname']
     throttle = kwargs['throttle']
@@ -161,23 +159,23 @@ def main(**kwargs):
     simulator = kwargs['simulator']
     db = kwargs['db']
 
-    adc = AdbCommon(devices)
-    bsm = BasicMonkey(devices)
-    net = GetNetWork(devices)
-    fps = GetFPS(devices)
-    mem = GetMemory(devices)
-    cpu = GetCPU(devices)
+    adc = AdbCommon(device)
+    bsm = BasicMonkey(device)
+    net = GetNetWork(device)
+    fps = GetFPS(device)
+    mem = GetMemory(device)
+    cpu = GetCPU(device)
     # 初始化类
 
     starttime = int(abs(round(time.time(), 0)))
     starttimestamps = time.strftime('%Y-%m-%d %H:%M:%S')
 
     logger.log_info('Monkey脚本 - 开始' + '\n' \
-                 + '开始时间:%s' % str(starttimestamps))
+                    + '开始时间:%s' % str(starttimestamps))
 
     logger.log_info('删除临时保存性能文件')
 
-    if adc.delfiles(db.outfolder)  == 0 and bsm.emptylogcat() == 0:
+    if adc.delfiles(db.outfolder) == 0 and bsm.emptylogcat() == 0:
         # 删除out文件夹下所有临时文件
 
         monkeylog = db.monkeylog
@@ -202,14 +200,14 @@ def main(**kwargs):
             activity = adc.getactivity()
             # 获取当前运行的activity
 
-            bsm.whitelistrun(activity,whitelist)
+            bsm.whitelistrun(activity, whitelist)
             # 检测monkey运行状态
 
             cpu.getcpu(activity)
             # 采集CPU
             mem.getmeminfo(activity)
             # 采集内存
-            net.selectnetwork(simulator,activity)
+            net.selectnetwork(simulator, activity)
             # 采集流量
             fps.getfps(activity)
             # 采集FPS
@@ -227,7 +225,6 @@ def main(**kwargs):
             else:
                 time.sleep(30)
 
-
         logger.log_info('采集性能数据结束')
 
         endtime = int(abs(round(time.time(), 0)))
@@ -236,34 +233,31 @@ def main(**kwargs):
         endtimestamps = time.strftime('%Y-%m-%d %H:%M:%S')
 
         logger.log_info('Monkey脚本 - 结束' + '\n' + \
-              ',结束时间:%s' % str(endtimestamps) + \
-              ',耗时%s秒' % str(difftime))
+                        ',结束时间:%s' % str(endtimestamps) + \
+                        ',耗时%s秒' % str(difftime))
 
         adc.sendbroadcast(1)
         # 关闭隐藏导航
 
         if bsm.writeerror(monkeylog, writeerror) == 0:
             # 获取monkeylog所有日志
-            send_mail(devices,monkeylog, writeerror,str(difftime),monkeycmd)
+            send_mail(device, monkeylog, writeerror, str(difftime), monkeycmd)
             # 发送报警邮件
-            dt= time.strftime("%Y-%m-%d %H:%M:%S")
+            dt = time.strftime("%Y-%m-%d %H:%M:%S")
             # 插入数据库时间
-            CrashSQL().insert_table("""'%s','%s','%s','crash','%s'""" % (dt,devices,adc.getpackageinfo(apkname),monkeylog))
+            CrashSQL().insert_table(
+                """'%s','%s','%s','crash','%s'""" % (dt, device, adc.getpackageinfo(apkname), monkeylog))
             # 设备号、apk版本号、monkeylog日志插入android_crash表中
 
         CrashSQL().insert_table(
-            """'%s','%s','%s','run success','%s'""" % (time.strftime("%Y-%m-%d %H:%M:%S"), devices, adc.getpackageinfo(apkname), ''))
+            """'%s','%s','%s','run success','%s'""" % (
+            time.strftime("%Y-%m-%d %H:%M:%S"), device, adc.getpackageinfo(apkname), ''))
         # 设备号、apk版本号、monkeylog日志插入android_crash表中
 
+        from ReportServer import Flask
         Flask.task(monkeycmd=monkeycmd)
         # 执行生成性能报告
 
 
-
-
 if __name__ == '__main__':
     run()
-
-
-
-

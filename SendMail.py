@@ -16,9 +16,7 @@ from FileCommon import *
 import time
 import sys
 import logger
-reload(sys)
 
-sys.setdefaultencoding('utf8')
 
 debug = False
 

@@ -237,15 +237,22 @@ class AdbCommon():
         删除文件夹下的所有文件
         :return 0 　表示删除成功,1表示删除失败
         '''
-        folder = os.getcwd() + '/' + folder
+        folder = os.getcwd() + '\\' + folder
         if os.path.exists(folder):
-            cmd = 'rm -rf %s' % folder
-            logger.log_debug(cmd)
-            os.system(cmd)
+            # cmd = 'rm -rf %s' % folder
+            # logger.log_debug(cmd)
+            # os.system(cmd)
+            # windows 系统用上述方法删除不了
+            del_file_list = os.listdir(folder)
+            for file in del_file_list:
+                os.remove(folder + '\\' + file)
+            os.rmdir(folder)
 
-        if os.path.exists(folder) == False:
+        if not os.path.exists(folder):
+            logger.log_debug('删除目录：' + folder + " 成功")
             return 0
         else:
+            logger.log_debug('删除目录：' + folder + " 失败")
             return 1
 
     def replaceword(self,path, oldstart, new):

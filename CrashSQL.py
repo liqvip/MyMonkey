@@ -48,7 +48,7 @@ class CrashSQL():
             cursor.close()
             # 关闭连接
             conn.close()
-        except Exception, e:
+        except Exception as e:
             logger.log_error("连接数据异常:" + str(e))
             data = None
 
@@ -65,7 +65,7 @@ class CrashSQL():
         try:
             sql = "SELECT %s FROM %s " % (condition, self.tablename)
             logger.log_info('查询%s语句:%s' % (self.tablename, sql))
-            print self.connectmysql(sql)
+            print(self.connectmysql(sql))
 
         except Exception as e:
             logger.log_error('查询%s语句:%s,失败原因:%s' % (self.tablename, sql, str(e)))
@@ -98,15 +98,15 @@ class CrashSQL():
                              (selectsql, tablename, wheresql)
             # print 'sql_select is ' +  sql_select
             try:
-                print sql_select
+                print(sql_select)
                 curs.execute(sql_select)
                 select_result = curs.fetchall()
             finally:
                 curs.close()
                 con.close()
             return select_result
-        except pymysql.Error, e:
-            print "执行数据表查询异常：", e
+        except pymysql.Error as e:
+            print("执行数据表查询异常：", e)
 
     def insert_table(self, valuesql):
         '''
@@ -138,7 +138,7 @@ class CrashSQL():
 
             try:
                 insert_result = curs.execute(sql_insert)
-            except pymysql.Error, e:
+            except pymysql.Error as e:
                 logger.log_error("执行数据异常!!!" + str(e))
 
             finally:
@@ -146,6 +146,6 @@ class CrashSQL():
                 con.commit()
                 con.close()
             return insert_result
-        except pymysql.Error, e:
+        except pymysql.Error as e:
             logger.log_error("执行数据异常!!!" + str(e))
 

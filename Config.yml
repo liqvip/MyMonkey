@@ -1,13 +1,33 @@
-apkname: "com.xxxx.xxxxx"
-runtime: 10
+# 需测试的 apk 包名
+apkname: "cn.unicook.cashier"
+
+# monkey 运行时间(min)
+runtime: 1
+
+# 随机数
 seed: 20
+
+# monkey 两次事件之间的间隔(ms)
 throttle: 500
-simulator: true
+
+# true：模拟器上测试，false：真机上测试
+simulator: false
+
 appdebug: true
+
+# 将要测试的 apk 绝对路径。没安装时，可以自动安装
 apkpath: "xxxx.apk"
-devces: 192.168.56.101:5555
-whitelist: "com.xxx.xxx.xxxxx"
+
+# usb连接时，填写设备号，wifi 连接时，填写 ip，端口号默认是 5555
+device: 'LNGNW2P0ZG'
+
+# 需要测试的 Activity 白名单
+whitelist: ""
+
 account: "13800138000"
+
 pwd: "123321"
+
+# 日志级别
 loglevel: "INFO"
 

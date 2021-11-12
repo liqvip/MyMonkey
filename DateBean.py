@@ -13,13 +13,16 @@ class DateBean(object):
         self._monkeyfolder = 'MonkeyLog'
         self._monkeylog = self._monkeyfolder + '/MonkeyInfo_%s.log' % time.strftime("%Y%m%d%H%M%S")
         self._monkeyerrorlog =  self._monkeyfolder + '/MonkeyError_%s.log' % time.strftime("%Y%m%d%H%M%S")
+
         self._logdir = 'Log'
         self._writeerror = self._logdir + "/" + time.strftime("%Y%m%d%H%M%S") + "_writeerror.log"
+
         self._outfolder = 'out'
         self._mempath = self._outfolder + '/meminfo.txt'
         self._cpupath = self._outfolder + '/cpu.txt'
         self._networkpath = self._outfolder + '/network.txt'
         self._fpspath = self._outfolder + '/fpspath.txt'
+
         self._packagename= 'com.luojilab.player'
 
         self._dependlist = ['DependApp/simiasque-debug.apk',

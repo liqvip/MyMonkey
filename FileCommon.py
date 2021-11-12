@@ -16,7 +16,7 @@ def readyaml(filepath):
     读取yaml文件
     :return:
     '''
-    with open(filepath, "r") as f_r:
+    with open(filepath, encoding='utf-8') as f_r:
         content = yaml.load(f_r.read())
     return content
 
